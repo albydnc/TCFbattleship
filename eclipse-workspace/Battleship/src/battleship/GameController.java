@@ -6,15 +6,16 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class GameController implements Initializable {
-
+	private Udp Remote = new Udp();
 	@FXML private VBox EnemyBox;
 	@FXML private VBox PlayerBox;
-	
+	@FXML private Label connectionStatus;
 	private char[][] MyBoard;
 	private Ship Carrier = new Ship(5, true, true);
 	private Ship Battleship = new Ship(4, true, true);
@@ -155,6 +156,7 @@ public class GameController implements Initializable {
     }
 	
 	public void reset() {
+		connectionStatus.setText("RESET");
 		for (int y=0; y<10; y++) {
 			for (int x=0; x<10; x++) {
 				Cell cell = getPlayerCell(x, y);
@@ -173,12 +175,21 @@ public class GameController implements Initializable {
 		Destroyer.control=true;
 		Destroyer.vertical=true;
 	}
-	
+	public void onStartServer() throws IOException {
+		//connectionStatus.setText("Connecting...");
+
+		Remote.send("SERVER");
+		String recv = Remote.receive();
+		if(recv.equals("CLIENT")) connectionStatus.setText("Connected.");
+	}
+	public void onListen() throws IOException {
+		//connectionStatus.setText("Connecting...");
+		String recv = Remote.receive();
+		if(recv.equals("SERVER")) Remote.send("CLIENT");
+		connectionStatus.setText("Connected.");
+	}
 	public void onStart() throws IOException {
-		String banana = "gianni";
-		Udp UDP = new Udp();
-		UDP.send(banana);
-		UDP.receive();
+
 	}
 	
 	@Override

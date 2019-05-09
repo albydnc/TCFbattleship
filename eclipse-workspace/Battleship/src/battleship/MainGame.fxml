@@ -19,8 +19,8 @@
       <Button layoutX="360.0" layoutY="557.0" mnemonicParsing="false" onAction="#reset" text="Reset" />
       <Button layoutX="452.0" layoutY="557.0" mnemonicParsing="false" onAction="#onStart" text="Start" />
       <TextField layoutX="383.0" layoutY="316.0" promptText="IP:" />
-      <Button layoutX="454.0" layoutY="357.0" mnemonicParsing="false" text="Start Server" />
-      <Button layoutX="431.0" layoutY="401.0" mnemonicParsing="false" text="Listen for server" />
-      <Label layoutX="502.0" layoutY="452.0" />
+      <Button layoutX="454.0" layoutY="357.0" mnemonicParsing="false" onAction="#onStartServer" text="Start Server" />
+      <Button layoutX="431.0" layoutY="401.0" mnemonicParsing="false" onAction="#onListen" text="Listen for server" />
+      <Label fx:id="connectionStatus" layoutX="486.0" layoutY="444.0" text="TEST" />
    </children>
 </AnchorPane>
