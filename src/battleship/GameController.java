@@ -76,7 +76,7 @@ public class GameController implements Initializable, MqttCallback {
 	private int life = 17;
 	private int enemyLife = 17;
 	int a,b;
-	boolean shot = false;
+	boolean shot = false, hasStarted = false;
 	int xRecv,yRecv;
 	int index = 0;
 	StringProperty connStatus = null;
@@ -380,7 +380,7 @@ public class GameController implements Initializable, MqttCallback {
 				cell.setOnMouseClicked(event -> shoot(cell.getCellX(),cell.getCellY()));
 			}
 		}
-		connStatus.setValue("Waiting...");
+		if(!hasStarted) connStatus.setValue("Waiting...");
 		try {
 			mqttClient.publish(sendTopic, "START".getBytes(), 0, false);
 		} catch (MqttException e1) {
@@ -494,7 +494,7 @@ public class GameController implements Initializable, MqttCallback {
 		
 		Cell c = getEnemyCell(a,b);
 		if(rcv.equals("START")) {
-			
+			hasStarted = true;
 			Platform.runLater(new Runnable() {
 	            @Override public void run() {
 			if(recvTopic.compareTo(sendTopic) > 0) {
@@ -525,7 +525,7 @@ public class GameController implements Initializable, MqttCallback {
 	    			alert.getButtonTypes().setAll(Yes,No);
 	    			Optional<ButtonType> result = alert.showAndWait();
 	    			if (result.get() == Yes){
-	    			    reset();
+	    			    resetAll();
 	    			} else {
 	    				System.exit(0);
 	    			}
@@ -590,7 +590,7 @@ public class GameController implements Initializable, MqttCallback {
 	    			alert.getButtonTypes().setAll(Yes,No);
 	    			Optional<ButtonType> result = alert.showAndWait();
 	    			if (result.get() == Yes){
-	    			    reset();
+	    			    resetAll();
 	    			} else {
 	    				System.exit(0);
 	    			}
